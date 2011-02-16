@@ -20,6 +20,8 @@ class AppKernel extends Kernel
 
             // register your bundles
             new Sensio\HelloBundle\HelloBundle(),
+            new Neton\OlaBundle\OlaBundle(),
+            new Neton\DirectBundle\DirectBundle(),
         );
 
         if ('dev' === $this->getEnvironment()) {

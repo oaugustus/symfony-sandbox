@@ -17,6 +17,10 @@ twig.config:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
 
+# Direct Configuration
+direct.api:
+    #remote_attrinute: '@remote'
+#    form_attribute:   '@form'
 ## Doctrine Configuration
 #doctrine.dbal:
 #    dbname:   xxxxxxxx

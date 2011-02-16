@@ -1,0 +1,3 @@
+ola:
+    pattern:  /ola/{name}
+    defaults: { _controller: OlaBundle:Ola:index, _format: html }

@@ -1,0 +1,3 @@
+direct:
+    pattern:  /api.js
+    defaults: { _controller: DirectBundle:Direct:getApi, _format: html }

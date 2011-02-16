@@ -1,0 +1,3 @@
+direct.api:
+    remote_attribute: '@remote'
+    form_attribute:   '@form'

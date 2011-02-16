@@ -211,8 +211,9 @@ class Container implements ContainerInterface
     public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
     {
         $id = strtolower($id);
-
+        
         if (isset($this->services[$id])) {
+
             return $this->services[$id];
         }
 

@@ -55,12 +55,12 @@ abstract class Kernel implements KernelInterface
      * @param Boolean $debug       Whether to enable debugging or not
      */
     public function __construct($environment, $debug)
-    {
+    {        
         $this->environment = $environment;
         $this->debug = (Boolean) $debug;
         $this->booted = false;
         $this->rootDir = realpath($this->registerRootDir());
-        $this->name = preg_replace('/[^a-zA-Z0-9_]+/', '', basename($this->rootDir));
+        $this->name = preg_replace('/[^a-zA-Z0-9_]+/', '', basename($this->rootDir));        
 
         if ($this->debug) {
             ini_set('display_errors', 1);
@@ -356,6 +356,7 @@ abstract class Kernel implements KernelInterface
 
         foreach ($this->registerBundles() as $bundle) {
             $name = $bundle->getName();
+
             if (isset($this->bundles[$name])) {
                 throw new \LogicException(sprintf('Trying to register two bundles with the same name "%s"', $name));
             }
@@ -399,12 +400,19 @@ abstract class Kernel implements KernelInterface
     protected function initializeContainer()
     {
         $class = $this->name.ucfirst($this->environment).($this->debug ? 'Debug' : '').'ProjectContainer';
+
         $location = $this->getCacheDir().'/'.$class;
         $reload = $this->debug ? $this->needsReload($class, $location) : false;
 
         $fresh = false;
+
+        // regenerate the container class file
         if ($reload || !file_exists($location.'.php')) {
+
+            // generate the file description
             $container = $this->buildContainer();
+
+            // write the fisical file
             $this->dumpContainer($container, $class, $location.'.php');
 
             $fresh = true;
@@ -412,6 +420,7 @@ abstract class Kernel implements KernelInterface
 
         require_once $location.'.php';
 
+        // instantiate the container object
         $this->container = new $class();
         $this->container->set('kernel', $this);
 
