@@ -4,7 +4,7 @@ namespace Neton\OlaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class OlaController extends Controller
+class TestController extends Controller
 {
     /**
      * @remote
@@ -24,7 +24,7 @@ class OlaController extends Controller
      * @form
      * @param array $params
      */
-    public function testAction($params)
+    public function teste2Action($params)
     {
         
     }
