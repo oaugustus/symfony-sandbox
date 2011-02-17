@@ -6,8 +6,8 @@ app.config:
     profiler: { only_exceptions: false }
 
 webprofiler.config:
-    toolbar: true
-    intercept_redirects: true
+    toolbar: false
+    intercept_redirects: false
 
 zend.config:
     logger:

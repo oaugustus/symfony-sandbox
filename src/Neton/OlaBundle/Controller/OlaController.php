@@ -11,9 +11,9 @@ class OlaController extends Controller
      * @param <type> $name
      * @return <type> 
      */
-    public function indexAction($name)
+    public function indexAction($params)
     {
-        //return $this->render('OlaBundle:Ola:index.html.twig', array('name' => $name));
+        return $params;
 
         // render a PHP template instead
         // return $this->render('HelloBundle:Hello:index.html.php', array('name' => $name));
@@ -24,8 +24,8 @@ class OlaController extends Controller
      * @form
      * @param array $params
      */
-    public function testAction($params)
+    public function testAction($params, $files)
     {
-        
+        return true;
     }
 }

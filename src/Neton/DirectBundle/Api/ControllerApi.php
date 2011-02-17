@@ -110,7 +110,7 @@ class ControllerApi
             if ($isRemote)
             {
                 $api['name'] = str_replace('Action','',$method->getName());
-                $api['len'] = $method->getNumberOfParameters();
+                $api['len'] = 1;//$method->getNumberOfParameters();
 
                 if(!!preg_match('/' . $this->formAttribute . '/', $doc))
                 {

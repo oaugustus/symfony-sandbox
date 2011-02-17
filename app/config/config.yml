@@ -19,6 +19,7 @@ twig.config:
 
 # Direct Configuration
 direct.api:
+    url: http://localhost/symfony/symfony-sandbox/web/app_dev.php/route
     #remote_attrinute: '@remote'
 #    form_attribute:   '@form'
 ## Doctrine Configuration
