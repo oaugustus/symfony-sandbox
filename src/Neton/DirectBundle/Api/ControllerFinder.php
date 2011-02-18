@@ -20,13 +20,11 @@ class ControllerFinder
         $dir = $bundle->getPath()."\\Controller";
         $controllers = array();
         
-        if (is_dir($dir))
-        {
+        if (is_dir($dir)) {
             $finder = new Finder();            
             $finder->files()->in($dir)->name('*Controller.php');
             
-            foreach ($finder as $file)
-            {
+            foreach ($finder as $file) {
 
                 $name = explode('.',$file->getFileName());
                 $class = $bundle->getNamespace()."\\Controller\\".$name[0];

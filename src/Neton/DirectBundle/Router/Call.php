@@ -8,12 +8,54 @@ namespace Neton\DirectBundle\Router;
  */
 class Call
 {
+    /**
+     * The ExtDirect action called. With reference to Bundle via underscore '_'.
+     * 
+     * @var string
+     */
     protected $action;
+
+    /**
+     * The ExtDirect method called.
+     * 
+     * @var string
+     */
     protected $method;
+
+    /**
+     * The ExtDirect request type.
+     * 
+     * @var string
+     */
     protected $type;
+
+    /**
+     * The ExtDirect transaction id.
+     * 
+     * @var integer
+     */
     protected $tid;
+
+    /**
+     * The ExtDirect call params.
+     * 
+     * @var array
+     */
     protected $data;
+
+    /**
+     * The ExtDirect request type. Where values in ('form','single').
+     * 
+     * @var string
+     */
     protected $callType;
+
+    /**
+     * The ExtDirect upload reference.
+     * 
+     * @var boolean
+     */
+    protected $upload;
 
     /**
      * Initialize an ExtDirect call.
@@ -25,12 +67,9 @@ class Call
     {
         $this->callType = $type;
         
-        if ('single' == $type)
-        {
+        if ('single' == $type) {
             $this->initializeFromSingle($call);
-        }
-        else
-        {
+        } else {
             $this->initializeFromForm($call);
         }
     }
@@ -111,10 +150,8 @@ class Call
         $this->tid      = $call['extTID']; unset($call['extTID']);
         $this->upload = $call['extUpload']; unset($call['extUpload']);
 
-        foreach ($call as $key => $value)
-        {
+        foreach ($call as $key => $value) {
             $this->data[$key] = $value;
         }
-
     }
 }

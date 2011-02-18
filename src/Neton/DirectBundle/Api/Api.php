@@ -10,7 +10,19 @@ namespace Neton\DirectBundle\Api;
  */
 class Api
 {
-    protected $container = null;
+    /**
+     * The application container.
+     *
+     * @var Symfony\Component\DependencyInjection\Container
+     */
+    protected $container;
+
+    /**
+     * The ExtDirect JSON API description.
+     * 
+     * @var JSON
+     */
+    protected $api;
 
     /**
      * Initialize the API.
@@ -19,14 +31,22 @@ class Api
     {
         $this->container = $container;
 
-        if ($container->get('kernel')->isDebug())
-        {
+        if ($container->get('kernel')->isDebug()) {
             $this->api = json_encode($this->createApi());
-        }else
-        {
+        } else {
             //@todo: implement the cache mechanism
             $this->api = $this->getApiFromCache();
         }        
+    }
+
+    /**
+     * Return the API in JSON format.
+     *
+     * @return string JSON API description
+     */
+    public function  __toString()
+    {        
+        return $this->api;
     }
 
     /**
@@ -40,16 +60,13 @@ class Api
 
         $actions = array();        
 
-        foreach ($bundles as $bundle => $controllers )
-        {
+        foreach ($bundles as $bundle => $controllers ) {
             $bundleShortName = str_replace('Bundle', '', $bundle);
             
-            foreach ($controllers as $controller)
-            {
+            foreach ($controllers as $controller) {
                 $api = new ControllerApi($this->container, $controller);
 
-                if ($api->isExposed())
-                {
+                if ($api->isExposed()) {
                     $actions[$bundleShortName."_".$api->getActionName()] = $api->getApi();
                 }
             }
@@ -62,7 +79,6 @@ class Api
             'id' => $this->container->getParameter('direct.api.id'),
             'actions' => $actions
         );
-
     }
 
     /**
@@ -75,26 +91,13 @@ class Api
         $controllers = array();
         $finder = new ControllerFinder();
         
-        foreach ($this->container->get('kernel')->getBundles() as $bundle)
-        {
+        foreach ($this->container->get('kernel')->getBundles() as $bundle) {
             $found = $finder->getControllers($bundle);
-
-            if (!empty ($found))
-            {                
+            if (!empty ($found)) {
                 $controllers[$bundle->getName()] = $found;
             }
         }
 
         return $controllers;
-    }
-    
-    /**
-     * Return the API in JSON format.
-     * 
-     * @return string JSON API description
-     */
-    public function  __toString()
-    {
-        return $this->api;
-    }
+    }    
 }

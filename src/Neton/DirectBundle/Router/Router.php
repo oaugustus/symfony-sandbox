@@ -1,6 +1,8 @@
 <?php
 namespace Neton\DirectBundle\Router;
 
+use Symfony\Component\DependencyInjection\ContainerAware;
+
 /**
  * Router is the ExtDirect Router class.
  *
@@ -10,7 +12,26 @@ namespace Neton\DirectBundle\Router;
  */
 class Router
 {
-    protected $request = null;
+    /**
+     * The ExtDirect Request object.
+     * 
+     * @var Neton\DirectBundle\Request
+     */
+    protected $request;
+    
+    /**
+     * The ExtDirect Response object.
+     * 
+     * @var Neton\DirectBundle\Response
+     */
+    protected $response;
+    
+    /**
+     * The application container.
+     * 
+     * @var Symfony\Component\DependencyInjection\Container
+     */
+    protected $container;
     
     /**
      * Initialize the router object.
@@ -26,13 +47,14 @@ class Router
 
     /**
      * Do the ExtDirect routing processing.
+     *
+     * @return JSON
      */
     public function route()
     {
         $batch = array();
         
-        foreach ($this->request->getCalls() as $call)
-        {
+        foreach ($this->request->getCalls() as $call) {
             $batch[] = $this->dispatch($call);
         }
 
@@ -43,24 +65,20 @@ class Router
      * Dispatch a remote method call.
      * 
      * @param  Neton\DirectBundle\Router\Call $call
-     * @return <type> 
+     * @return Mixed
      */
     private function dispatch($call)
     {
         $controller = $this->resolveController($call->getAction());
         $method = $call->getMethod()."Action";
 
-        if (!is_callable(array($controller, $method)))
-        {
+        if (!is_callable(array($controller, $method))) {
             //todo: throw an execption method not callable
         }
 
-        if ($this->request->getCallType() == 'form')
-        {
+        if ('form' == $this->request->getCallType()) {
             $result = $call->getResponse($controller->$method($call->getData(), $this->request->getFiles()));
-        }
-        else
-        {
+        } else {
             $result = $call->getResponse($controller->$method($call->getData()));
         }
 
@@ -83,18 +101,15 @@ class Router
 
         $class = $namespace."\\".$controllerName."Controller";
 
-        try
-        {
+        try {
             $controller = new $class();
 
-            if ($controller instanceof \Symfony\Component\DependencyInjection\ContainerAware)
-            {
+            if ($controller instanceof ContainerAware) {
                 $controller->setContainer($this->container);
             }
 
             return $controller;
-        }catch(Exception $e)
-        {
+        } catch(Exception $e) {
             // todo: handle exception
         }
     }

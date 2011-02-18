@@ -8,9 +8,26 @@ namespace Neton\DirectBundle\Api;
  */
 class ControllerApi
 {
+    /**
+     * Store the controller reflection object.
+     * 
+     * @var \Reflection
+     */
     protected $reflection;
-    protected $api = array();
-    protected $container = null;
+
+    /**
+     * The controller ExtDirect api.
+     * 
+     * @var array
+     */
+    protected $api;
+
+    /**
+     * The application container.
+     *
+     * @var Symfony\Component\DependencyInjection\Container
+     */
+    protected $container;
 
     /**
      * Initialize the object.
@@ -20,11 +37,9 @@ class ControllerApi
      */
     public function __construct($container, $controller)
     {
-        try
-        {
+        try {
             $this->reflection = new \ReflectionClass($controller);
-        }catch (Exception $e)
-        {
+        } catch (Exception $e) {
             // @todo: throw an exception
         }
         
@@ -40,7 +55,7 @@ class ControllerApi
      * @return Boolean true if has exposed, otherwise return false
      */
     public function isExposed()
-    {
+    {        
         return (null != $this->api) ? true : false;
     }
 
@@ -50,7 +65,7 @@ class ControllerApi
      * @return array
      */
     public function getApi()
-    {
+    {        
         return $this->api;
     }
 
@@ -60,7 +75,7 @@ class ControllerApi
      * @return string
      */
     public function getActionName()
-    {
+    {        
         return str_replace('Controller','',$this->reflection->getShortName());
     }
     
@@ -76,16 +91,13 @@ class ControllerApi
         // get public methods from controller
         $methods = $this->reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        foreach ($methods as $method)
-        {
+        foreach ($methods as $method) {
             $mApi = $this->getMethodApi($method);
 
-            if ($mApi)
-            {
+            if ($mApi) {
                 $api[] = $mApi;
             }
         }
-
 
         return $api;        
     }
@@ -101,19 +113,16 @@ class ControllerApi
     {
         $api = false;
 
-        if (strlen($method->getDocComment()) > 0)
-        {
+        if (strlen($method->getDocComment()) > 0) {
             $doc = $method->getDocComment();
 
             $isRemote = !!preg_match('/' . $this->remoteAttribute . '/', $doc);
 
-            if ($isRemote)
-            {
+            if ($isRemote) {
                 $api['name'] = str_replace('Action','',$method->getName());
                 $api['len'] = 1;//$method->getNumberOfParameters();
 
-                if(!!preg_match('/' . $this->formAttribute . '/', $doc))
-                {
+                if(!!preg_match('/' . $this->formAttribute . '/', $doc)) {
                     $api['formHandler'] = true;
                 }
             }

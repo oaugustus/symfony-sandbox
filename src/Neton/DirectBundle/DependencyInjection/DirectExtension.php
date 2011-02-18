@@ -27,8 +27,7 @@ class DirectExtension extends Extension
         $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
         $loader->load('direct.xml');
 
-        foreach ($configs as $config)
-        {
+        foreach ($configs as $config) {
             $this->registerApiConfiguration($config, $container);
         }
     }

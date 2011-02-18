@@ -8,11 +8,47 @@ namespace Neton\DirectBundle\Router;
  */
 class Request
 {
+    /**
+     * The Symfony request object taked by DirectBundle controller.
+     * 
+     * @var Symfony\Component\HttpFoundation\Request
+     */
     protected $request;
+    
+    /**
+     * The HTTP_RAW_POST_DATA if the Direct call is a batch call.
+     * 
+     * @var JSON
+     */
     protected $rawPost;
+    
+    /**
+     * The $_POST data if the Direct Call is a form call.
+     * 
+     * @var array
+     */
     protected $post;
+
+    /**
+     * Store the Direct Call type. Where values in ('form','batch').
+     * 
+     * @var string
+     */
     protected $callType;
+
+    /**
+     * Store the Direct calls. Only 1 if it a form call or 1.* if it a
+     * batch call.
+     * 
+     * @var array
+     */
     protected $calls = null;
+
+    /**
+     * Store the $_FILES if it a form call.
+     * 
+     * @var array
+     */
     protected $files;
 
     /**
@@ -33,9 +69,7 @@ class Request
     /**
      * Return the type of Direct call.
      *
-     * 'form' if is a formHandler call and 'batch' if is a batch call.
-     *
-     * @return string Type of Direct call.
+     * @return string
      */
     public function getCallType()
     {
@@ -59,8 +93,7 @@ class Request
      */
     public function getCalls()
     {
-        if (null == $this->calls)
-        {
+        if (null == $this->calls) {
             $this->calls = $this->extractCalls();
         }
 
@@ -76,17 +109,13 @@ class Request
     {
         $calls = array();
 
-        if ('form' == $this->callType)
-        {
+        if ('form' == $this->callType) {
             $calls[] = new Call($this->post, 'form');
-        }
-        else
-        {
+        } else {
             $decoded = json_decode($this->rawPost);
             $decoded = !is_array($decoded) ? array($decoded) : $decoded;
 
-            foreach ($decoded as $call)
-            {
+            foreach ($decoded as $call) {
                 $calls[] = new Call((array)$call, 'single');
             }
         }
