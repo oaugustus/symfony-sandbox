@@ -17,12 +17,12 @@ use Symfony\Component\DependencyInjection\Resource\FileResource;
 class DirectExtension extends Extension
 {
     /**
-     * Loads the API configuration.
+     * Loads the Direct configuration.
      *
      * @param array $config An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function apiLoad(array $configs, ContainerBuilder $container)
+    public function configLoad(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
         $loader->load('direct.xml');
@@ -40,28 +40,28 @@ class DirectExtension extends Extension
      */
     protected function registerApiConfiguration($config, ContainerBuilder $container)
     {
-        if (isset($config['url'])) {
-            $container->setParameter('direct.api.url', $config['url']);
+        if (isset($config['api']['url'])) {
+            $container->setParameter('direct.api.url', $config['api']['url']);
         }
 
-        if (isset($config['type'])) {
-            $container->setParameter('direct.api.type', $config['type']);
+        if (isset($config['api']['type'])) {
+            $container->setParameter('direct.api.type', $config['api']['type']);
         }
 
-        if (isset($config['namespace'])) {
-            $container->setParameter('direct.api.namespace', $config['namespace']);
+        if (isset($config['api']['namespace'])) {
+            $container->setParameter('direct.api.namespace', $config['api']['namespace']);
         }
 
-        if (isset($config['id'])) {
-            $container->setParameter('direct.api.id', $config['id']);
+        if (isset($config['api']['id'])) {
+            $container->setParameter('direct.api.id', $config['api']['id']);
         }
 
-        if (isset($config['remote_attribute'])) {
-            $container->setParameter('direct.api.remote_attribute', $config['remote_attribute']);
+        if (isset($config['api']['remote_attribute'])) {
+            $container->setParameter('direct.api.remote_attribute', $config['api']['remote_attribute']);
         }
 
-        if (isset($config['form_attribute'])) {
-            $container->setParameter('direct.api.form_attribute', $config['form_attribute']);
+        if (isset($config['api']['form_attribute'])) {
+            $container->setParameter('direct.api.form_attribute', $config['api']['form_attribute']);
         }
 
     }

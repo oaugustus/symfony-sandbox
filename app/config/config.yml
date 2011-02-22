@@ -18,8 +18,9 @@ twig.config:
     strict_variables: %kernel.debug%
 
 # Direct Configuration
-direct.api:
-    url: http://localhost/symfony/symfony-sandbox/web/app_dev.php/route
+direct.config:
+    api:
+        url: http://localhost/symfony/symfony-sandbox/web/app_dev.php/route
     #remote_attrinute: '@remote'
 #    form_attribute:   '@form'
 ## Doctrine Configuration
